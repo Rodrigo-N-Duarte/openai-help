@@ -1,5 +1,5 @@
 {
-  "name": "acerto-de-contas",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "pinia": "^2.1.4",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
@@ -25,6 +27,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "vue-cli-plugin-pinia": "~0.2.4",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "webpack-plugin-vuetify": "^2.0.0-alpha.0"
   }

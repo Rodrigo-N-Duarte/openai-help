@@ -1,4 +1,4 @@
-# acerto-de-contas
+# frontend
 
 ## Project setup
 ```

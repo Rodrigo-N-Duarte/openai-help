@@ -1,13 +1,14 @@
-// noinspection TypeScriptValidateTypes
 import 'reflect-metadata';
 import Fastify from 'fastify';
 import routes from "./src/routes";
 import {connectDatabase} from "./dbconfig";
+import cors from '@fastify/cors'
 
 const fastify = Fastify({
     logger: true
 });
 
+fastify.register(cors)
 fastify.register(routes);
 
 connectDatabase().then(() => {

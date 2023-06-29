@@ -1,18 +1,16 @@
-<template>
-  <HelloWorld />
-</template>
-
+<template>home</template>
 <script>
-import { defineComponent } from 'vue';
+import {AuthStore} from "@/store/authStore";
 
-// Components
-import HelloWorld from '../components/HelloWorld.vue';
-
-export default defineComponent({
-  name: 'HomeView',
-
-  components: {
-    HelloWorld,
+export default {
+  name: "HomeView",
+  data() {
+    return {
+      authStore: new AuthStore()
+    }
   },
-});
+  beforeMount() {
+    this.authStore.logged ? null : this.$router.push("/login")
+  }
+}
 </script>

@@ -1,144 +1,143 @@
 <template>
-  <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
-    <v-sheet class="mx-auto form-login-container">
-      <v-form v-if="login" ref="form">
-        <v-text-field
-            v-model="email"
-            :rules="nameRules"
-            label="Email"
-            required
-            variant="outlined"
-            class="input-login"
-        ></v-text-field>
-        <v-text-field
-            v-model="senha"
-            :rules="nameRules"
-            :type="mostrarSenha ? 'text' : 'password'"
-            label="Senha"
-            required
-            variant="outlined"
-            class="input-login"
-        >
-          <template v-slot:append>
-            <v-icon @click="mostrarSenha = !mostrarSenha">{{ mostrarSenha ? 'mdi-eye' : 'mdi-eye-off' }}</v-icon>
-          </template>
-        </v-text-field>
-
-        <div class="d-flex flex-column">
-            <router-link to="/home">
-              <v-btn
-                  block
-                  class="mt-4"
-                  color="success"
-              >
-                Login
-              </v-btn>
-            </router-link>
-          <h5 class="form-login-subtitle">Não tem login? <span style="cursor: pointer" @click="login = !login">Cadastre-se</span>
-          </h5>
-        </div>
-      </v-form>
-      <v-form v-else ref="form">
-        <v-text-field
-            v-model="novoNome"
-            :rules="nameRules"
-            label="Nome *"
-            required
-            class="input-login"
-        ></v-text-field>
-        <v-text-field
-            v-model="novoEmail"
-            :rules="nameRules"
-            label="Email *"
-            required
-            class="input-login"
-        ></v-text-field>
-        <v-text-field
-            v-model="novaSenha"
-            :rules="nameRules"
-            :type="mostrarSenha ? 'text' : 'password'"
-            label="Senha *"
-            required
-            class="input-login"
-        >
-          <template v-slot:append>
-            <v-icon @click="mostrarSenha = !mostrarSenha">{{ mostrarSenha ? 'mdi-eye' : 'mdi-eye-off' }}</v-icon>
-          </template>
-        </v-text-field>
-        <v-text-field
-            v-model="novaConfirmacaoSenha"
-            :rules="nameRules"
-            :type="mostrarSenha ? 'text' : 'password'"
-            label="Confirmação de senha *"
-            required
-            class="input-login"
-        >
-          <template v-slot:append>
-            <v-icon @click="mostrarSenha = !mostrarSenha">{{ mostrarSenha ? 'mdi-eye' : 'mdi-eye-off' }}</v-icon>
-          </template>
-        </v-text-field>
-
-        <div class="d-flex flex-column">
-          <v-btn
-              block
-              class="mt-4"
-              color="success"
-              @click="validate"
+  <v-parallax
+      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+  >
+    <div v-if="login" class="d-flex flex-column fill-height justify-center align-center text-white">
+      <v-sheet class="mx-auto mb-16 login-container" width="400">
+        <v-form ref="form">
+          <v-text-field
+              v-model="email"
+              :rules="nameRules"
+              label="Email"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="password"
+              :rules="nameRules"
+              :type="showPassword ? 'text' : 'password'"
+              label="Senha"
+              required
           >
-            Cadastrar
-          </v-btn>
-          <h5 class="form-login-subtitle">Já tem conta? <span @click="login = !login" style="cursor: pointer">Login.</span></h5>
-        </div>
-      </v-form>
-    </v-sheet>
+            <template v-slot:append>
+              <v-icon @click="showPassword = !showPassword">{{ showPassword ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+            </template>
+          </v-text-field>
+
+          <div class="d-flex flex-column">
+            <v-btn
+                class="mt-4"
+                color="success"
+                @click="fazerLogin"
+            >
+              Login
+            </v-btn>
+          </div>
+          <h4 class="mt-5">Não tem cadastro? <span class="form-login-subtitle"
+                                                   @click="login = !login">Clique aqui</span></h4>
+        </v-form>
+      </v-sheet>
+    </div>
+    <div v-else class="d-flex flex-column fill-height justify-center align-center text-white">
+      <v-sheet class="mx-auto mb-16 login-container" width="400">
+        <v-form ref="form">
+          <v-text-field
+              v-model="newName"
+              :rules="nameRules"
+              label="Nome"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="newEmail"
+              :rules="nameRules"
+              label="Email"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="newPassword"
+              :rules="nameRules"
+              :type="showPassword ? 'text' : 'password'"
+              label="Senha"
+              required
+          >
+            <template v-slot:append>
+              <v-icon @click="showPassword = !showPassword">{{ showPassword ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+            </template>
+          </v-text-field>
+          <v-text-field
+              v-model="confirmPassword"
+              :rules="nameRules"
+              :type="showPassword ? 'text' : 'password'"
+              label="Confirmação de senha"
+              required
+          >
+            <template v-slot:append>
+              <v-icon @click="showPassword = !showPassword">{{ showPassword ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+            </template>
+          </v-text-field>
+
+          <div class="d-flex flex-column">
+            <v-btn
+                class="mt-4"
+                color="success"
+            >
+              Cadastrar
+            </v-btn>
+          </div>
+          <h4 class="mt-5">Já tem cadastro? <span class="form-login-subtitle" @click="login = !login">Clique aqui</span>
+          </h4>
+        </v-form>
+      </v-sheet>
+    </div>
   </v-parallax>
 </template>
 
 <script>
-export default {
-  name: "LoginView",
+import { defineComponent } from 'vue';
+import {AuthStore} from "@/store/authStore";
+export default defineComponent({
+  name: 'HomeView',
   data() {
     return {
-      email: null,
-      senha: null,
+      authStore: new AuthStore(),
       login: true,
-      novoNome: null,
-      novoEmail: null,
-      novaSenha: null,
-      mostrarSenha: false,
-      novaConfirmacaoSenha: null,
+      showPassword: false,
+      email: null,
+      password: null,
+      newName: null,
+      newEmail: null,
+      newPassword: null,
+      confirmPassword: null,
       nameRules: [
-        v => !!v || 'Campo obrigatório.'
+        v => !!v || 'Campo obrigatório'
       ],
     }
   },
   methods: {
-    async validate() {
-      const {valid} = await this.$refs.form.validate()
-
-      if (valid) alert('Form is valid')
-    },
-    reset() {
-      this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
-  },
-}
+    async fazerLogin() {
+      try {
+        await this.authStore.login({email: this.email, password: this.password})
+        this.authStore.logged = true
+        this.$router.push('/')
+      }
+      catch (e) {
+        this.authStore.logged = false
+        console.log(e)
+      }
+    }
+  }
+});
 </script>
 
 <style>
-.form-login-container {
-  margin-top: 10%;
-  width: 30%;
-  padding: 50px;
-  border-radius: 15px;
+.login-container {
+  background-color: aliceblue;
+  padding: 30px;
+  border-radius: 15px !important;
 }
-.input-login {
-  margin-bottom: 10px;
-}
+
 .form-login-subtitle {
-  margin-top: 20px;
+  cursor: pointer;
+  color: goldenrod;
 }
 </style>
+
