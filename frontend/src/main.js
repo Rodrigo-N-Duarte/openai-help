@@ -4,10 +4,14 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 
 loadFonts()
 
-createApp(App).use(createPinia())
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedState)
+
+createApp(App).use(pinia)
   .use(router)
   .use(vuetify)
   .mount('#app')

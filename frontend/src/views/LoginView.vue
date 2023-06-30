@@ -1,195 +1,248 @@
 <template>
-    <v-parallax height="100%"
-                src="https://cdn.pixabay.com/photo/2014/08/29/03/02/horses-430441_1280.jpg">
-        <div v-if="login" >
-            <v-sheet class="mx-auto login-container" width="400">
-                <div class="title-form-login">Login</div>
-                <v-form ref="form" style="border: 1px solid lightgray; padding: 40px">
-                    <v-text-field
-                            v-model="email"
-                            :rules="nameRules"
-                            label="Email"
-                            required
-                    ></v-text-field>
-                    <v-text-field
-                            v-model="password"
-                            :rules="nameRules"
-                            :type="showPassword ? 'text' : 'password'"
-                            label="Senha"
-                            required
-                    >
-                        <template v-slot:append>
-                            <v-icon @click="showPassword = !showPassword">{{
-                                showPassword ? 'mdi-eye-off' : 'mdi-eye'
-                                }}
-                            </v-icon>
-                        </template>
-                    </v-text-field>
+  <v-row justify="center" v-if="login">
+    <VCard
+        class="auth-card pa-4 pt-7 form-login-container"
+        max-width="448"
+        elevation="24"
+    >
+      <VCardItem class="justify-center">
+        <template #prepend>
+          <div class="d-flex">
+            <div
+                class="d-flex text-primary"
+            />
+          </div>
+        </template>
 
-                    <div class="d-flex flex-column">
-                        <v-btn
-                                class="mt-4"
-                                color="success"
-                                @click="fazerLogin"
-                        >
-                            Login
-                        </v-btn>
-                    </div>
-                    <h4 class="mt-5">Não tem cadastro? <span class="form-login-subtitle"
-                                                             @click="login = !login">Clique aqui</span></h4>
-                </v-form>
-            </v-sheet>
-        </div>
-        <div v-else>
-            <v-sheet class="mx-auto mb-16 login-container" width="400">
-                <div class="title-form-login">Cadastro</div>
-                <v-form ref="form" style="border: 1px solid lightgray; padding: 40px">
-                    <v-text-field
-                            v-model="newName"
-                            :rules="nameRules"
-                            label="Nome"
-                            required
-                    ></v-text-field>
-                    <v-text-field
-                            v-model="newEmail"
-                            :rules="nameRules"
-                            label="Email"
-                            required
-                    ></v-text-field>
-                    <v-text-field
-                            v-model="newPassword"
-                            :rules="nameRules"
-                            :type="showPassword ? 'text' : 'password'"
-                            label="Senha"
-                            required
-                    >
-                        <template v-slot:append>
-                            <v-icon @click="showPassword = !showPassword">{{
-                                showPassword ? 'mdi-eye-off' : 'mdi-eye'
-                                }}
-                            </v-icon>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                            v-model="confirmPassword"
-                            :rules="nameRules"
-                            :type="showPassword ? 'text' : 'password'"
-                            label="Confirmação de senha"
-                            required
-                    >
-                        <template v-slot:append>
-                            <v-icon @click="showPassword = !showPassword">{{
-                                showPassword ? 'mdi-eye-off' : 'mdi-eye'
-                                }}
-                            </v-icon>
-                        </template>
-                    </v-text-field>
+        <VCardTitle class="text-2xl font-weight-bold">
+          Login
+        </VCardTitle>
+      </VCardItem>
+      <VCardText class="pt-2">
+        <h5 class="text-h5 mb-1">
+          Bem-vindo de volta! 👋🏻
+        </h5>
+        <p class="mb-0">
+          Por favor faça seu login ou cadastre-se.
+        </p>
+      </VCardText>
+      <VCardText>
+        <VForm @submit.prevent="$router.push('/')">
+          <VRow>
+            <!-- email -->
+            <VCol cols="12">
+              <VTextField
+                  v-model="email"
+                  placeholder="seunome@email.com"
+                  label="Email"
+                  type="email"
+              />
+            </VCol>
 
-                    <div class="d-flex flex-column">
-                        <v-btn
-                                class="mt-4"
-                                color="success"
-                                @click="fazerCadastro"
-                        >
-                            Cadastrar
-                        </v-btn>
-                    </div>
-                    <h4 class="mt-5">Já tem cadastro? <span class="form-login-subtitle" @click="login = !login">Clique aqui</span>
-                    </h4>
-                </v-form>
-            </v-sheet>
-        </div>
-    </v-parallax>
-    <vue-basic-alert
-            ref="alert" :duration="30"/>
+            <VCol cols="12">
+                          <VTextField
+                              v-model="password"
+                              label="Senha"
+                              placeholder="············"
+                              :type="showPassword ? 'text' : 'password'"
+                              :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                              @click:append-inner="showPassword = !showPassword"
+                          />
+            </VCol>
+            <v-row justify="center my-2">
+              <v-btn @click="fazerLogin" :loading="loading">Login</v-btn>
+            </v-row>
+            <VCol
+                cols="12"
+                class="text-center text-base"
+            >
+              <span>Novo na plataforma?</span>
+              <span
+                  class="text-primary ms-2"
+                  style="cursor: pointer"
+                  @click="login = !login"
+              >
+                Criar uma conta
+              </span>
+            </VCol>
+          </VRow>
+        </VForm>
+      </VCardText>
+    </VCard>
+  </v-row>
+  <v-row justify="center" v-else>
+    <VCard
+        class="auth-card pa-4 pt-7 form-login-container"
+        max-width="448"
+        elevation="24"
+    >
+      <VCardItem class="justify-center">
+        <template #prepend>
+          <div class="d-flex">
+            <div
+                class="d-flex text-primary"
+            />
+          </div>
+        </template>
+
+        <VCardTitle class="text-2xl font-weight-bold">
+          Cadastre-se
+        </VCardTitle>
+      </VCardItem>
+      <VCardText class="pt-2">
+        <h5 class="text-h5 mb-1">
+          Bem-vindo! 🎖
+        </h5>
+        <p class="mb-0">
+          Por favor prencha seus dados.
+        </p>
+      </VCardText>
+      <VCardText>
+        <VForm @submit.prevent="$router.push('/')">
+          <VRow>
+            <VCol cols="12">
+              <VTextField
+                  v-model="newName"
+                  label="Nome"
+                  placeholder="Seu nome"
+                  type="text"
+              />
+            </VCol>
+            <VCol cols="12">
+              <VTextField
+                  v-model="newEmail"
+                  placeholder="seunome@email.com"
+                  label="Email"
+                  type="email"
+              />
+            </VCol>
+            <VCol cols="12">
+              <VTextField
+                  v-model="newPassword"
+                  label="Senha"
+                  placeholder="············"
+                  :type="showPassword ? 'text' : 'password'"
+                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append-inner="showPassword = !showPassword"
+              />
+            </VCol>
+            <VCol cols="12">
+              <VTextField
+                  v-model="confirmPassword"
+                  label="Confirmação da senha"
+                  placeholder="············"
+                  :type="showPassword ? 'text' : 'password'"
+                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append-inner="showPassword = !showPassword"
+              />
+            </VCol>
+            <v-row justify="center my-2">
+              <v-btn @click="fazerCadastro" :loading="loading">Cadastrar</v-btn>
+            </v-row>
+            <VCol
+                cols="12"
+                class="text-center text-base"
+            >
+              <span>Já tem conta?</span>
+              <span
+                  class="text-primary ms-2"
+                  style="cursor: pointer"
+                  @click="login = !login"
+              >
+                Fazer login.
+              </span>
+            </VCol>
+          </VRow>
+        </VForm>
+      </VCardText>
+    </VCard>
+  </v-row>
+  <vue-basic-alert
+      ref="alert" :duration="30"/>
 </template>
 
 <script>
 import {defineComponent} from 'vue';
 import {AuthStore} from "@/store/authStore";
 import VueBasicAlert from 'vue-basic-alert'
+import {setAlert} from "@/utils/setAlert";
 
 export default defineComponent({
-    name: 'HomeView',
-    components: {VueBasicAlert},
-    data() {
-        return {
-            authStore: new AuthStore(),
-            showDialog: false,
-            login: true,
-            showPassword: false,
-            email: null,
-            password: null,
-            newName: null,
-            newEmail: null,
-            newPassword: null,
-            confirmPassword: null,
-            nameRules: [
-                v => !!v || 'Campo obrigatório'
-            ],
-        }
-    },
-    methods: {
-        setAlert(type, title, subtitle) {
-            this.$refs.alert
-                .showAlert(type, title, subtitle)
-        },
-
-        async fazerLogin() {
-            try {
-                await this.authStore.login({email: this.email, password: this.password})
-                this.authStore.logged = true
-                this.$router.push('/')
-            } catch (e) {
-                this.setAlert("error", "Erro", e.response.data)
-                this.authStore.logged = false
-            }
-        },
-
-        async fazerCadastro() {
-            if (!this.newName || !this.newEmail || !this.newPassword || !this.confirmPassword || this.newPassword !== this.confirmPassword) {
-                return
-            }
-            try {
-                await this.authStore.register({
-                    name: this.newName,
-                    email: this.newEmail,
-                    password: this.confirmPassword
-                })
-                this.authStore.logged = true
-                this.$router.push('/')
-            } catch (e) {
-                this.authStore.logged = false
-                this.setAlert("error", "Erro", e.response.data)
-            }
-        }
+  name: 'HomeView',
+  components: {VueBasicAlert},
+  data() {
+    return {
+      authStore: new AuthStore(),
+      showDialog: false,
+      loading: false,
+      login: true,
+      showPassword: false,
+      email: null,
+      password: null,
+      newName: null,
+      newEmail: null,
+      newPassword: null,
+      confirmPassword: null,
+      nameRules: [
+        v => !!v || 'Campo obrigatório'
+      ],
     }
+  },
+  methods: {
+    async fazerLogin() {
+      this.loading = true
+      try {
+        const res = await this.authStore.login({email: this.email, password: this.password})
+        this.setAuthStore(res)
+      } catch (e) {
+        setAlert(this.$refs.alert, "error", "Erro", e.response.data)
+        this.authStore.logged = false
+      }
+      this.loading = false
+    },
+
+    parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    },
+
+    async fazerCadastro() {
+      this.loading = true
+      if (!this.newName || !this.newEmail || !this.newPassword || !this.confirmPassword) {
+        setAlert(this.$refs.alert, "error", "Erro","Os campos não podem estar vazios.")
+      }
+      try {
+        const res = await this.authStore.register({
+          name: this.newName,
+          email: this.newEmail,
+          password: this.newPassword,
+          confirmPassword: this.confirmPassword
+        })
+        this.setAuthStore(res)
+      } catch (e) {
+        this.authStore.logged = false
+        setAlert(this.$refs.alert, "error", "Erro", e.response.data)
+      }
+      this.loading = false
+    },
+
+    setAuthStore(res) {
+      const user = this.parseJwt(res.data)
+      this.authStore.userId = user.id
+      this.authStore.logged = true
+      this.authStore.jwt = res.data
+      this.$router.push('/')
+    }
+  },
 });
 </script>
 
 <style>
-.login-container {
-    background-color: aliceblue;
-    margin-top: 15%;
-    padding: 30px;
-}
-
-.title-form-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: lightgray;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-
-.form-login-subtitle {
-    cursor: pointer;
-    color: goldenrod;
+.form-login-container {
+  margin-top: 7%;
 }
 </style>
 

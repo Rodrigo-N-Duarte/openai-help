@@ -5,9 +5,11 @@ export const AuthStore = defineStore('AuthStore', {
     state: () => {
         return {
             logged: false,
-            userId: null
+            userId: null,
+            jwt: null
         }
     },
+    persist: true,
     actions: {
         async login(body) {
             return await api.post("/auth/login", body)
@@ -15,6 +17,10 @@ export const AuthStore = defineStore('AuthStore', {
 
         async register(body) {
             return await api.post("/auth/register", body)
-        }
+        },
+
+/*        async reponse() {
+            return await api.get("/", {headers: {"Authorization": `Bearer ${this.$state.jwt}`}})
+        }*/
     }
 })

@@ -6,9 +6,7 @@ async function routes(fastify: FastifyInstance): Promise<void> {
     const userController = new UserController()
     const authController = new AuthController()
 
-    fastify.get('/', (req: any, reply: any) => {
-        return reply.send("deu")
-    });
+    // fastify.get('/', {preHandler: authController.authenticateToken}, userController.res)
 
     // User
     fastify.get('/user', userController.findAll);

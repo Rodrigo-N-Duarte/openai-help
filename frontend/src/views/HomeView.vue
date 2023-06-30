@@ -1,16 +1,21 @@
-<template>home</template>
+<template>
+    <NavBar />
+</template>
 <script>
+import NavBar from "@/components/NavBar.vue";
 import {AuthStore} from "@/store/authStore";
-
 export default {
   name: "HomeView",
+  components: {NavBar},
   data() {
     return {
       authStore: new AuthStore()
     }
   },
   beforeMount() {
-    this.authStore.logged ? null : this.$router.push("/login")
+    if (!this.authStore.logged) {
+      this.$router.push("/login")
+    }
   }
 }
 </script>
