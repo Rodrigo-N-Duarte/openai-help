@@ -11,6 +11,10 @@ export const AuthStore = defineStore('AuthStore', {
     actions: {
         async login(body) {
             return await api.post("/auth/login", body)
+        },
+
+        async register(body) {
+            return await api.post("/auth/register", body)
         }
     }
 })

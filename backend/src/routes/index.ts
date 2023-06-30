@@ -17,7 +17,7 @@ async function routes(fastify: FastifyInstance): Promise<void> {
     fastify.put('/user', userController.updateUser);
 
     // Auth
-    fastify.post("/auth/login", authController.login)
+    fastify.post("/auth/login", authController.login);
     fastify.post("/auth/register", authController.register)
 }
 
