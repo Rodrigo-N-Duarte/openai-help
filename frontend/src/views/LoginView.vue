@@ -62,7 +62,7 @@
                   style="cursor: pointer"
                   @click="login = !login"
               >
-                Criar uma conta
+                Criar uma conta.
               </span>
             </VCol>
           </VRow>
@@ -231,7 +231,7 @@ export default defineComponent({
 
     setAuthStore(res) {
       const user = this.parseJwt(res.data)
-      this.authStore.userId = user.id
+      this.authStore.id = user.id
       this.authStore.logged = true
       this.authStore.jwt = res.data
       this.$router.push('/')

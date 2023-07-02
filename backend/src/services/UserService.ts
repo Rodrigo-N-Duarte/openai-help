@@ -1,11 +1,10 @@
 import User from "../models/User";
 import {Messages} from "../utils/Messages";
 export class UserService {
-    async findAll(req: any, reply: any) {
-        return await User.find();
-    }
     async findById(req: any, reply: any) {
-        return await User.findById(req.params.id);
+        let user: User | null = await User.findById(req.params.id);
+        delete user?.password
+        return user
     }
     async createUser(req: any, reply: any) {
         const body = req.body

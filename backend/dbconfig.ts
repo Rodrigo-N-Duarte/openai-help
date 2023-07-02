@@ -1,6 +1,5 @@
 // database.ts
 import { createConnection, ConnectionOptions } from 'typeorm';
-import dotenv from "dotenv/config";
 export const datasource: ConnectionOptions = {
     type: 'postgres',
     host: 'localhost',

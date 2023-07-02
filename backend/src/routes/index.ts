@@ -9,7 +9,6 @@ async function routes(fastify: FastifyInstance): Promise<void> {
     // fastify.get('/', {preHandler: authController.authenticateToken}, userController.res)
 
     // User
-    fastify.get('/user', userController.findAll);
     fastify.get('/user/:id', userController.findById);
     fastify.post('/user', userController.createUser);
     fastify.put('/user', userController.updateUser);

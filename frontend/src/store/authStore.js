@@ -5,7 +5,7 @@ export const AuthStore = defineStore('AuthStore', {
     state: () => {
         return {
             logged: false,
-            userId: null,
+            id: null,
             jwt: null
         }
     },

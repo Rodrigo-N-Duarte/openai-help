@@ -3,9 +3,6 @@ import {UserService} from "../services/UserService";
 
 const userService = new UserService()
 export class UserController {
-    async findAll(req: FastifyRequest, reply: FastifyReply) {
-        return await userService.findAll(req, reply);
-    }
     async findById(req: FastifyRequest, reply: FastifyReply) {
         return await userService.findById(req, reply);
     }
