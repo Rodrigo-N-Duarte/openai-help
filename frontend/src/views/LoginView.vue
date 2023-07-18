@@ -1,8 +1,9 @@
 <template>
   <v-row justify="center" v-if="login">
     <VCard
-        class="auth-card pa-4 pt-7 form-login-container"
+        class="auth-card pa-4 pt-7 form-login-container login-card"
         max-width="448"
+        height="500"
         elevation="24"
     >
       <VCardItem class="justify-center">
@@ -29,7 +30,6 @@
       <VCardText>
         <VForm @submit.prevent="$router.push('/')">
           <VRow>
-            <!-- email -->
             <VCol cols="12">
               <VTextField
                   v-model="email"
@@ -50,7 +50,7 @@
                           />
             </VCol>
             <v-row justify="center my-2">
-              <v-btn @click="fazerLogin" :loading="loading">Login</v-btn>
+              <v-btn @click="loginOn" :loading="loading" class="background-default">Login</v-btn>
             </v-row>
             <VCol
                 cols="12"
@@ -72,7 +72,7 @@
   </v-row>
   <v-row justify="center" v-else>
     <VCard
-        class="auth-card pa-4 pt-7 form-login-container"
+        class="auth-card pa-4 pt-7 form-login-container login-card"
         max-width="448"
         elevation="24"
     >
@@ -137,7 +137,7 @@
               />
             </VCol>
             <v-row justify="center my-2">
-              <v-btn @click="fazerCadastro" :loading="loading">Cadastrar</v-btn>
+              <v-btn @click="signUp" :loading="loading" class="background-default">Cadastrar</v-btn>
             </v-row>
             <VCol
                 cols="12"
@@ -158,7 +158,7 @@
     </VCard>
   </v-row>
   <vue-basic-alert
-      ref="alert" :duration="30"/>
+      ref="alert" class="basic-alert" :duration="30"/>
 </template>
 
 <script>
@@ -189,13 +189,13 @@ export default defineComponent({
     }
   },
   methods: {
-    async fazerLogin() {
+    async loginOn() {
       this.loading = true
       try {
         const res = await this.authStore.login({email: this.email, password: this.password})
         this.setAuthStore(res)
       } catch (e) {
-        setAlert(this.$refs.alert, "error", "Erro", e.response.data)
+        setAlert(this.$refs.alert, "error", "Erro", e.response.data.message)
         this.authStore.logged = false
       }
       this.loading = false
@@ -209,7 +209,7 @@ export default defineComponent({
       }
     },
 
-    async fazerCadastro() {
+    async signUp() {
       this.loading = true
       if (!this.newName || !this.newEmail || !this.newPassword || !this.confirmPassword) {
         setAlert(this.$refs.alert, "error", "Erro","Os campos não podem estar vazios.")
@@ -224,7 +224,7 @@ export default defineComponent({
         this.setAuthStore(res)
       } catch (e) {
         this.authStore.logged = false
-        setAlert(this.$refs.alert, "error", "Erro", e.response.data)
+        setAlert(this.$refs.alert, "error", "Erro", e.response.data.message)
       }
       this.loading = false
     },
@@ -241,6 +241,10 @@ export default defineComponent({
 </script>
 
 <style>
+.login-card {
+    background-color: #2d2d2d !important;
+    color: aliceblue !important;
+}
 .form-login-container {
   margin-top: 7%;
 }

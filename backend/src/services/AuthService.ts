@@ -3,47 +3,48 @@ import User from "../models/User";
 import {Messages} from "../utils/Messages";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv/config'
+import * as dotenv from 'dotenv'
+dotenv.config()
 import validator from 'validator'
-
-const userService = new UserService()
+import {UserHistoryEnum} from "../enum/UserHistory.ts";
+import {UserHistoryService} from "./UserHistoryService.ts";
 
 export class AuthService {
+    userService = new UserService()
+    userHistoryService = new UserHistoryService()
     async authenticateToken(req: any, reply: any, next: any) {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader?.split(' ')[1]
+        const authorization = req.headers['authorization']
+        const token = authorization && authorization?.split(' ')[1]
         if (!token) {
-            return reply.status(401).send("Acesso negado")
+            return reply.status(401).send(new Error(Messages.ACESSO_NEGADO))
         }
-        jwt.verify(token, String(process.env.JWT_SECRET), (err: any) => {
-            if (err) return reply.status(403).send("Acesso negado com o token inserido")
+        jwt.verify(token, process.env.JWT_SECRET, (err: any) => {
+            if (err) return reply.status(403).send(new Error(Messages.TOKEN_INVALIDO))
             next()
         })
     }
 
     async login(req: any, reply: any) {
         const {email, password} = req.body
-        if (!email || !password) {
-            return reply.status(422).send("Dados faltantes")
-        }
-        const userExists: null | User = await User.findByEmail(email);
+        const userExists: null | User = await this.userService.findByEmail(email);
         if (userExists) {
             const passwordMatch = await bcrypt.compare(password, userExists.password)
             if (!passwordMatch) {
-                return reply.status(404).send("Senha inválida")
+                return reply.status(404).send(new Error(Messages.SENHA_INVALIDA))
             }
-            const token = jwt.sign({id: userExists?.id}, String(process.env.JWT_SECRET))
+            await this.userHistoryService.updateHistory(userExists, UserHistoryEnum.LOGGED)
+            const token = jwt.sign({id: userExists?.id}, process.env.JWT_SECRET)
             return reply.send(token)
         }
-        return reply.status(422).send("Usuário não encontrado")
+        return reply.status(422).send(new Error(Messages.USUARIO_NAO_ENCONTRADO))
     }
 
     async register(req: any, reply: any) {
         const {name, email, password, confirmPassword} = req.body
         try {
-            const validation = await this.validRegister(name, email, password, confirmPassword)
+            const validation: string = await this.validRegister(name, email, password, confirmPassword)
             if (validation) {
-                return reply.status(400).send(validation)
+                return reply.status(400).send(new Error(validation))
             }
             const salt: any = await bcrypt.genSalt(12)
             const hash: any = await bcrypt.hash(password, salt)
@@ -52,31 +53,46 @@ export class AuthService {
             user.email = email
             user.password = hash
             await user.save()
-            const token = jwt.sign({id: user?.id}, String(process.env.JWT_SECRET))
+            await this.userHistoryService.updateHistory(user, UserHistoryEnum.REGISTERED)
+            const token = jwt.sign({id: user.id}, process.env.JWT_SECRET)
             return reply.send(token)
+        } catch (e) {
+            return reply.status(400).send(e)
         }
-        catch (e) {
-            return reply.status(400).send(Messages.erro)
+    }
+
+    async logout(req: any, reply: any) {
+        const id = req?.params?.id
+        try {
+            const user: User | null = await this.userService.findById(id);
+            if (user) {
+                delete user.password
+                await this.userHistoryService.updateHistory(user, UserHistoryEnum.LOGOUT)
+                return reply.send(user)
+            }
+        } catch (e) {
+            return reply.status(400).send(e)
         }
+        return reply.status(400).send(new Error(Messages.ERRO))
     }
 
     private async validRegister(name: string, email: string, password: string, confirmPassword: string) {
         let validation: string | null = null
         if (validator.isEmpty(name.trim()) || validator.isEmpty(email.trim()) || validator.isEmpty(password.trim())) {
-            validation = "Dados faltantes"
+            validation = Messages.DADOS_FALTANTES
         }
-        const userExists: null | User = await User.findByEmail(email);
+        const userExists: null | User = await this.userService.findByEmail(email);
         if (userExists) {
-            validation = "Email já existente, tente outro"
+            validation = Messages.EMAIL_JA_EXISTE
         }
         if (!validator.isEmail(email)) {
-            validation = "Email inválido"
+            validation = Messages.EMAIL_INVALIDO
         }
         if (!validator.isLength(password, {min: 5, max: 20})) {
-            validation = "A senha não pode ter mais que 20 caracteres nem ter menos que 5 dígitos"
+            validation = Messages.SENHA_FORA_PADRAO
         }
         if (password !== confirmPassword) {
-            validation = "As senhas são diferentes"
+            validation = Messages.SENHAS_DIFERENTES
         }
         return validation
     }

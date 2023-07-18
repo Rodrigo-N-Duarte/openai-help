@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn, BaseEntity} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany} from 'typeorm'
+import {UserHistory} from "./UserHistory.ts";
 
 @Entity("user")
 class User extends BaseEntity {
@@ -10,21 +11,8 @@ class User extends BaseEntity {
     email: string
     @Column()
     password:string
-
-    static async findById(id: number) {
-        const builder = this.createQueryBuilder('u')
-            .where('u.id = :id', {id: id})
-
-        return await builder
-            .getOne();
-    }
-    static async findByEmail(email: string) {
-        const builder = this.createQueryBuilder('u')
-            .where('u.email = :email', {email: email})
-
-        return await builder
-            .getOne();
-    }
+    @OneToMany(() => UserHistory, (history) => history.user)
+    history: UserHistory
 }
 
 export default User

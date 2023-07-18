@@ -14,13 +14,11 @@ export const AuthStore = defineStore('AuthStore', {
         async login(body) {
             return await api.post("/auth/login", body)
         },
-
+        async logoutUser(id) {
+            return await api.post(`/auth/logout/${id}`, {})
+        },
         async register(body) {
             return await api.post("/auth/register", body)
         },
-
-/*        async reponse() {
-            return await api.get("/", {headers: {"Authorization": `Bearer ${this.$state.jwt}`}})
-        }*/
     }
 })

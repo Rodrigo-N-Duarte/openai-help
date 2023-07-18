@@ -9,6 +9,9 @@ export class AuthController {
     async register(req: any, reply: any) {
         return await authService.register(req, reply)
     }
+    async logout(req: any, reply: any) {
+        return await authService.logout(req, reply)
+    }
     async authenticateToken(req: any, reply: any, next: any) {
         return await authService.authenticateToken(req, reply, next)
     }

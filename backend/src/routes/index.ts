@@ -1,21 +1,33 @@
 import { FastifyInstance } from 'fastify';
 import {UserController} from "../controllers/UserController";
 import {AuthController} from "../controllers/AuthController";
+import AuthSchema from "../schemas/AuthSchema.ts";
 async function routes(fastify: FastifyInstance): Promise<void> {
 
     const userController = new UserController()
     const authController = new AuthController()
-
-    // fastify.get('/', {preHandler: authController.authenticateToken}, userController.res)
+    const authSchema = new AuthSchema();
 
     // User
     fastify.get('/user/:id', userController.findById);
-    fastify.post('/user', userController.createUser);
-    fastify.put('/user', userController.updateUser);
 
     // Auth
-    fastify.post("/auth/login", authController.login);
-    fastify.post("/auth/register", authController.register)
+    const loginSchemaOpts = {
+        schema: authSchema.login,
+        handler: authController.login
+    }
+    const registerSchemaOpts = {
+        schema: authSchema.register,
+        handler: authController.register
+    }
+    const logoutSchemaOpts = {
+        schema: authSchema.logout,
+        handler: authController.logout
+    }
+
+    fastify.post("/auth/login", loginSchemaOpts);
+    fastify.post("/auth/register", registerSchemaOpts)
+    fastify.post("/auth/logout/:id", logoutSchemaOpts)
 }
 
 export default routes;

@@ -6,7 +6,7 @@ export const UserStore = defineStore('UserStore', {
     },
     persist: true,
     actions: {
-        async buscarPorId(id) {
+        async findById(id) {
             const authStore = AuthStore()
             return await api.get(`/user/${id}`,{headers: {"Authorization": `Bearer ${authStore.jwt}`}})
         },
