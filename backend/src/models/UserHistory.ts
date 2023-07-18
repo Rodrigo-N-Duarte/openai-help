@@ -10,7 +10,7 @@ export class UserHistory extends BaseEntity{
     dateTime: Date
     @Column({type: "varchar"})
     history: UserHistoryEnum
-    @ManyToOne(() => User, (user) => user.history, {cascade: true, lazy: true, onDelete: "CASCADE"})
+    @ManyToOne(() => User, (user: User) => user.history, {cascade: true, lazy: true, onDelete: "CASCADE"})
     @JoinColumn({name: 'id_usuario'})
     user: User
 }
