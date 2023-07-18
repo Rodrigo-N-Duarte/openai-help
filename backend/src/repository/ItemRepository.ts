@@ -10,4 +10,7 @@ export class ItemRepository {
         return await builder
             .getOne();
     }
+    async findAll() {
+        return await this.repository.createQueryBuilder().getRawMany()
+    }
 }

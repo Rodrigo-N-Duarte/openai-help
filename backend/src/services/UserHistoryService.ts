@@ -1,5 +1,5 @@
 import User from "../models/User.ts";
-import {UserHistoryEnum} from "../enum/UserHistory.ts";
+import {UserHistoryEnum} from "../enum/UserHistoryEnum.ts";
 import {UserHistory} from "../models/UserHistory.ts";
 
 export class UserHistoryService {

@@ -3,7 +3,7 @@ import User from "./User";
 import {Item} from "./Item";
 
 @Entity()
-export class ItemUser extends BaseEntity{
+export class ItemUser extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
     @Column()

@@ -1,5 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne, BaseEntity} from "typeorm";
-import {UserHistoryEnum} from "../enum/UserHistory.ts";
+import {UserHistoryEnum} from "../enum/UserHistoryEnum.ts";
 import User from "./User";
 
 @Entity()

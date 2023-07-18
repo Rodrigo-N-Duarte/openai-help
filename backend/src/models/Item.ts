@@ -1,7 +1,7 @@
 import {BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import {ItemUser} from "./ItemUser";
 @Entity()
-export class Item extends BaseEntity{
+export class Item extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
     @Column()

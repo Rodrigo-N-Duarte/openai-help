@@ -4,6 +4,7 @@ import {UserService} from "./UserService";
 import {Messages} from "../utils/Messages";
 import {ItemUserService} from "./ItemUserService";
 import {Item} from "../models/Item";
+import User from "../models/User.ts";
 
 export class ItemService {
     itemRepository = new ItemRepository();
@@ -22,24 +23,33 @@ export class ItemService {
             return reply.status(400).send(Messages.ERRO)
         }
     }
-
+    async getAll(req: any, reply: any) {
+        try {
+            return await this.itemRepository.findAll()
+        } catch (e) {
+            return reply.status(400).send(Messages.ERRO)
+        }
+    }
     async purchaseItem(req: any, reply: any) {
         try {
             const body = req.body
-            const item = await this.itemRepository.findById(body.itemId)
-            const user = await this.userService.findById(body.userId)
+            const item: Item | null = await this.itemRepository.findById(body.itemId)
+            const user: User | null = await this.userService.findById(body.userId)
             const alreadyPurchased = await this.itemUserService.checkIfAlreadyPurchased(body.itemId, body.userId)
             if (user && item && !alreadyPurchased) {
-                const itemUser = new ItemUser();
-                itemUser.item = item
-                itemUser.datePurchased = new Date()
-                itemUser.user = user
-                itemUser.purchased = true
-                await itemUser.save()
-                delete itemUser.user
-                return itemUser
+                if (user.points >= item.price) {
+                    await this.userService.updateUserPoints(body.userId, item.price, '-')
+                    const itemUser = new ItemUser();
+                    itemUser.item = item
+                    itemUser.datePurchased = new Date()
+                    itemUser.user = user
+                    itemUser.purchased = true
+                    await itemUser.save()
+                    delete itemUser.user
+                    return itemUser
+                }
+                return reply.status(400).send(Messages.SALDO_INSUFICIENTE)
             }
-            return reply.status(400).send(Messages.ERRO)
         } catch (e) {
             return reply.status(400).send(Messages.ERRO)
         }

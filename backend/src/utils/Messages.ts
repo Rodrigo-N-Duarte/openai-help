@@ -10,4 +10,5 @@ export class Messages {
     public static DADOS_FALTANTES: string = "Dados faltantes."
     public static ID_INVALIDO: string = "ID inválido."
     public static ERRO: string = "Ocorreu um erro na operação."
+    public static SALDO_INSUFICIENTE = "Não existem saldos eficientes para essa transação."
 }

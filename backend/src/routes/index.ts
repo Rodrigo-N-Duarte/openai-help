@@ -4,6 +4,7 @@ import {AuthController} from "../controllers/AuthController";
 import {ItemController} from "../controllers/ItemController";
 import AuthSchema from "../schemas/AuthSchema.ts";
 import {ItemSchema} from "../schemas/ItemSchema";
+import {UserSchema} from "../schemas/UserSchema.ts";
 async function routes(fastify: FastifyInstance): Promise<void> {
 
     const userController = new UserController()
@@ -12,45 +13,46 @@ async function routes(fastify: FastifyInstance): Promise<void> {
 
     const authSchema = new AuthSchema();
     const itemSchema = new ItemSchema();
+    const userSchema = new UserSchema();
 
 
     // User
-    fastify.get('/user/:id', userController.findById);
-
+    fastify.get('/user/:id', {
+        schema: userSchema.findById,
+        handler: userController.findById
+    });
+    fastify.get('/user', {
+        handler: userController.findAll
+    });
 
 
     // Item
-    const createItemOpts = {
+    fastify.post("/item/create", {
         schema: itemSchema.create,
         handler: itemController.createItem
-    }
-    fastify.post("/item/create", createItemOpts)
-    const purchaseItemOpts = {
+    })
+    fastify.post("/item/purchase", {
         schema: itemSchema.purchase,
         handler: itemController.purchaseItem
-    }
-    fastify.post("/item/purchase", purchaseItemOpts)
-
+    })
+    fastify.get("/item", {
+        handler: itemController.getAll
+    })
 
 
     // Auth
-    const loginSchemaOpts = {
+    fastify.post("/auth/login", {
         schema: authSchema.login,
         handler: authController.login
-    }
-    fastify.post("/auth/login", loginSchemaOpts);
-
-    const registerSchemaOpts = {
+    });
+    fastify.post("/auth/register", {
         schema: authSchema.register,
         handler: authController.register
-    }
-    fastify.post("/auth/register", registerSchemaOpts)
-
-    const logoutSchemaOpts = {
+    })
+    fastify.post("/auth/logout/:id", {
         schema: authSchema.logout,
         handler: authController.logout
-    }
-    fastify.post("/auth/logout/:id", logoutSchemaOpts)
+    })
 }
 
 export default routes;

@@ -9,9 +9,11 @@
                     <v-col cols="1" class="nav-item" align="center">
                         <span class="font-weight-medium ">Loja</span>
                     </v-col>
-                    <v-col cols="1" class="nav-item" align="center">
-                        <span class="font-weight-medium ">Classificação</span>
-                    </v-col>
+                    <router-link to="/rank" class="link-default nav-item">
+                        <v-col cols="1" class="nav-item" align="center">
+                            <span class="font-weight-medium ">Classificação</span>
+                        </v-col>
+                    </router-link>
                     <v-col cols="1" class="nav-item" align="center" @click="logout">
                         <span class="font-weight-medium ">Logout</span>
                     </v-col>

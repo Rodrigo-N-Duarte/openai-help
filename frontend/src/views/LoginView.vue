@@ -192,8 +192,8 @@ export default defineComponent({
     async loginOn() {
       this.loading = true
       try {
-        const res = await this.authStore.login({email: this.email, password: this.password})
-        this.setAuthStore(res)
+        await this.authStore.login({email: this.email, password: this.password})
+            .then((res) => this.setAuthStore(res))
       } catch (e) {
         setAlert(this.$refs.alert, "error", "Erro", e.response.data.message)
         this.authStore.logged = false

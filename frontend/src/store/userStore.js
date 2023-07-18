@@ -10,5 +10,9 @@ export const UserStore = defineStore('UserStore', {
             const authStore = AuthStore()
             return await api.get(`/user/${id}`,{headers: {"Authorization": `Bearer ${authStore.jwt}`}})
         },
+        async findAll() {
+            const authStore = AuthStore()
+            return await api.get(`/user`,{headers: {"Authorization": `Bearer ${authStore.jwt}`}})
+        },
     }
 })

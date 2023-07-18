@@ -23,7 +23,7 @@
                                     <v-row justify="space-evenly">
                                         <v-tooltip location="bottom" text="ID de usuário">
                                             <template v-slot:activator="{ props }">
-                                                <v-col align="center" cols="4" lg="2">
+                                                <v-col align="center" cols="12" lg="2">
                                                     <div v-bind="props">
                                                         <div class="item-profile"
                                                              style="display: flex; flex-direction: column">
@@ -36,12 +36,12 @@
                                         </v-tooltip>
                                         <v-tooltip location="bottom" text="Nível de usuário">
                                             <template v-slot:activator="{ props }">
-                                                <v-col align="center" cols="4" lg="2">
+                                                <v-col align="center" cols="12" lg="2">
                                                     <div v-bind="props">
                                                         <div class="item-profile"
                                                              style="display: flex; flex-direction: column">
                                                             <span class="item-title">Nível:</span>
-                                                            <span class="item-content">#{{ user.id }}</span>
+                                                            <span class="item-content">{{ user.level }}</span>
                                                         </div>
                                                     </div>
                                                 </v-col>
@@ -49,12 +49,15 @@
                                         </v-tooltip>
                                         <v-tooltip location="bottom" text="Pontuação total">
                                             <template v-slot:activator="{ props }">
-                                                <v-col align="center" cols="4" lg="2">
+                                                <v-col align="center" cols="12" lg="2">
                                                     <div v-bind="props">
                                                         <div class="item-profile"
                                                              style="display: flex; flex-direction: column">
                                                             <span class="item-title">Pontos:</span>
-                                                            <span class="item-content">#{{ user.id }}</span>
+                                                                <div style="display: flex; justify-content: center; align-items: center">
+                                                                    <span class="item-content mr-1">{{ user.points }}</span>
+                                                                    <v-icon>mdi-currency-usd</v-icon>
+                                                                </div>
                                                         </div>
                                                     </div>
                                                 </v-col>
@@ -67,7 +70,7 @@
                                                         <div
                                                              style="display: flex; flex-direction: column" class="mt-10">
                                                             <span class="item-title">Data de entrada:</span>
-                                                            <span class="font-weight-black" style="font-size: 25px">#{{ user.id }}</span>
+                                                            <span class="font-weight-black" style="font-size: 25px">{{ formatDate(user.registeredDate) }}</span>
                                                         </div>
                                                     </div>
                                                 </v-col>
@@ -84,13 +87,13 @@
                                     </v-row>
                                     <v-row justify="space-evenly">
                                         <v-col align="start">
-                                            <h4 class="font-weight-regular mb-4">Experiência necessária para o próximo
-                                                nível: 3000</h4>
+                                            <h3 class="font-weight-regular mb-4">Barra de progresso de experiência: </h3>
+                                            <h4 class="font-weight-regular mb-4">{{user.points}}/100 </h4>
                                             <v-progress-linear
-                                                    v-model="xp"
+                                                    v-model="user.points"
                                                     color="#00dcdc"
                                                     height="25"
-                                                    max="30"
+                                                    max="100"
                                             ></v-progress-linear>
                                         </v-col>
                                     </v-row>
@@ -116,6 +119,7 @@ import {UserStore} from "@/store/userStore";
 import SideMenu from "@/components/SideMenu.vue";
 import NavBar from "@/components/NavBar.vue";
 import {mapState} from "pinia";
+import {formatDate} from "@/utils/formatDate";
 
 export default {
     name: "ProfileView",
@@ -142,10 +146,14 @@ export default {
         }
     },
     methods: {
+        formatDate,
         async findUserById() {
-            const res = await this.findById(this.authStore.id)
-            this.user = res.data
-        }
+            await this.findById(this.authStore.id)
+                .then((res) => {
+                    this.user = res.data
+                    console.log(this.user)
+                })
+        },
     },
     async beforeMount() {
         if (!this.authStore.logged) {
@@ -170,6 +178,7 @@ export default {
 
 .item-title {
 font-size: 18px;
+    font-family: monospace;
 }
 
 .item-content {

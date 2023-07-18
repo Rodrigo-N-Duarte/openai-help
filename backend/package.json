@@ -32,7 +32,8 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
     "validator": "^13.9.0",
-    "validator-js": "^0.2.1"
+    "validator-js": "^0.2.1",
+    "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
     "@types/fastify-cors": "^2.1.0",

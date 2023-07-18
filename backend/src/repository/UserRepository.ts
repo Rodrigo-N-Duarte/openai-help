@@ -20,10 +20,34 @@ export class UserRepository {
             uh.dateTime as "registeredDate"`)
             .getRawMany();
     }
+    async findAll() {
+        return await this.repository.createQueryBuilder("u")
+            .innerJoin(UserHistory, 'uh', "uh.user.id = u.id")
+            .where("uh.history = 'REGISTERED'")
+            .select(`
+            u.id as "id",
+            u.name as "name",
+            u.email as "email",
+            u.level as "level",
+            u.xp as "xp",
+            u.points as "points",
+            uh.dateTime as "registeredDate"`)
+            .getRawMany();
+    }
     async findByEmail(email: string) {
         const builder = this.repository.createQueryBuilder('u')
             .where('u.email = :email', {email: email})
         return await builder
             .getOne();
+    }
+    async updatePoints(id: number, points: number) {
+        return await this.repository
+            .createQueryBuilder()
+            .update(User)
+            .set({
+                points: points
+            })
+            .where("id = :id", { id: id })
+            .execute();
     }
 }

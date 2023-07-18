@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 dotenv.config()
 import validator from 'validator'
-import {UserHistoryEnum} from "../enum/UserHistory.ts";
+import {UserHistoryEnum} from "../enum/UserHistoryEnum.ts";
 import {UserHistoryService} from "./UserHistoryService.ts";
 
 export class AuthService {
