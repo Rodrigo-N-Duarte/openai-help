@@ -25,9 +25,16 @@ export class ItemService {
     }
     async getAll(req: any, reply: any) {
         try {
-            return await this.itemRepository.findAll()
+            const items: Item[] = await this.itemRepository.findAll(req.params.userId)
+            for (let item of items) {
+                const itemUser = await this.itemUserService.checkIfAlreadyPurchased(item.id, req.params.userId)
+                if (itemUser[0]) {
+                    item = Object.assign(item, itemUser[0])
+                }
+            }
+            return items
         } catch (e) {
-            return reply.status(400).send(Messages.ERRO)
+            return reply.status(400).send(e)
         }
     }
     async purchaseItem(req: any, reply: any) {
@@ -36,7 +43,7 @@ export class ItemService {
             const item: Item | null = await this.itemRepository.findById(body.itemId)
             const user: User | null = await this.userService.findById(body.userId)
             const alreadyPurchased = await this.itemUserService.checkIfAlreadyPurchased(body.itemId, body.userId)
-            if (user && item && !alreadyPurchased) {
+            if (user && item && !alreadyPurchased[0]) {
                 if (user.points >= item.price) {
                     await this.userService.updateUserPoints(body.userId, item.price, '-')
                     const itemUser = new ItemUser();

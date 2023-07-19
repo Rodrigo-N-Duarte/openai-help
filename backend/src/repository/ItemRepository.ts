@@ -1,6 +1,7 @@
 import {AppDataSource} from "../../dbconfig";
 import {Item} from "../models/Item";
 import {UserHistory} from "../models/UserHistory";
+import {ItemUser} from "../models/ItemUser.ts";
 
 export class ItemRepository {
     repository = AppDataSource.getRepository(Item)
@@ -10,7 +11,17 @@ export class ItemRepository {
         return await builder
             .getOne();
     }
-    async findAll() {
-        return await this.repository.createQueryBuilder().getRawMany()
+    async findAll(userId: number) {
+        const builder = this.repository.createQueryBuilder("i")
+            .leftJoin(ItemUser, "iu", "iu.user.id = :userId", {userId: userId})
+
+        return await builder
+            .select(`
+            i.id as "id",
+            i.name as "name",
+            i.price as "price",
+            i.description as "description"
+            `)
+            .getRawMany()
     }
 }

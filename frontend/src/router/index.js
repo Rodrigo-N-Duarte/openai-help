@@ -3,6 +3,7 @@ import LoginView from '../views/LoginView.vue'
 import HomeView from "@/views/HomeView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import RankView from "@/views/RankView.vue";
+import StoreView from "@/views/StoreView.vue";
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfileView
+  },
+  {
+    path: '/store',
+    name: 'store',
+    component: StoreView
   },
   {
     path: '/rank',

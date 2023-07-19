@@ -6,9 +6,11 @@
             </v-col>
             <v-col cols="11">
                 <v-row>
-                    <v-col cols="1" class="nav-item" align="center">
-                        <span class="font-weight-medium ">Loja</span>
-                    </v-col>
+                    <router-link to="/store" class="link-default nav-item">
+                        <v-col cols="1" class="nav-item" align="center">
+                            <span class="font-weight-medium ">Loja</span>
+                        </v-col>
+                    </router-link>
                     <router-link to="/rank" class="link-default nav-item">
                         <v-col cols="1" class="nav-item" align="center">
                             <span class="font-weight-medium ">Classificação</span>
@@ -60,6 +62,8 @@ export default {
 <style>
 .nav-item {
     height: 100% !important;
+    width: auto;
+    margin: 0 10px 0 10px;
 }
 .nav-item:hover {
     background-color: #282828;

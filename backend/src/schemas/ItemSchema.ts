@@ -9,7 +9,13 @@ export class ItemSchema {
     create = {
         body: Type.Object({
             name: Type.String(),
+            description: Type.String(),
             price: Type.Number()
         })
-    }
+    };
+    getAllByUserId = {
+        params: Type.Object({
+            userId: Type.Number()
+        })
+    };
 }

@@ -35,7 +35,8 @@ async function routes(fastify: FastifyInstance): Promise<void> {
         schema: itemSchema.purchase,
         handler: itemController.purchaseItem
     })
-    fastify.get("/item", {
+    fastify.get("/item/:userId", {
+        schema: itemSchema.getAllByUserId,
         handler: itemController.getAll
     })
 

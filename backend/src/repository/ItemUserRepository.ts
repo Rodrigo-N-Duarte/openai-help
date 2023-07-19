@@ -8,6 +8,11 @@ export class ItemUserRepository {
             .where('i.item.id = :idItem', {idItem: idItem})
             .andWhere('i.user.id = :idUser', {idUser: idUser})
         return await builder
-            .getOne();
+            .select(`
+            i.purchased as "purchased",
+            i.datePurchased as "datePurchased",
+            i.user.id as "userId",
+            i.item.id as "itemId"`)
+            .getRawMany();
     }
 }

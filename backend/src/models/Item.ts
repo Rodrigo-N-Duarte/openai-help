@@ -6,6 +6,8 @@ export class Item extends BaseEntity {
     id: number
     @Column()
     name: string
+    @Column({default: ''})
+    description: string
     @Column()
     price: number
     @OneToMany(() => ItemUser, (itemUser: ItemUser) => itemUser.item)
