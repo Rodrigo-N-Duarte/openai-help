@@ -5,15 +5,13 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
-import * as Toasted from 'vue-toasted';
 
 loadFonts()
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedState)
+export const piniaInstance = createPinia()
+piniaInstance.use(piniaPluginPersistedState)
 
-createApp(App).use(pinia)
+createApp(App).use(piniaInstance)
   .use(router)
-    .use(Toasted)
   .use(vuetify)
   .mount('#app')

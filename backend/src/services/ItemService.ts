@@ -57,6 +57,7 @@ export class ItemService {
                 }
                 return reply.status(400).send(Messages.SALDO_INSUFICIENTE)
             }
+            return reply.status(400).send(Messages.ERRO)
         } catch (e) {
             return reply.status(400).send(Messages.ERRO)
         }

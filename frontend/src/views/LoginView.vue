@@ -166,6 +166,7 @@ import {defineComponent} from 'vue';
 import {AuthStore} from "@/store/authStore";
 import VueBasicAlert from 'vue-basic-alert'
 import {setAlert} from "@/utils/setAlert";
+import {setCookie} from "@/utils/cookie";
 
 export default defineComponent({
   name: 'HomeView',
@@ -192,8 +193,8 @@ export default defineComponent({
     async loginOn() {
       this.loading = true
       try {
-        await this.authStore.login({email: this.email, password: this.password})
-            .then((res) => this.setAuthStore(res))
+        const res =await this.authStore.login({email: this.email, password: this.password})
+        this.setAuthStore(res)
       } catch (e) {
         setAlert(this.$refs.alert, "error", "Erro", e.response.data.message)
         this.authStore.logged = false
@@ -215,13 +216,13 @@ export default defineComponent({
         setAlert(this.$refs.alert, "error", "Erro","Os campos não podem estar vazios.")
       }
       try {
-        const res = await this.authStore.register({
+        await this.authStore.register({
           name: this.newName,
           email: this.newEmail,
           password: this.newPassword,
           confirmPassword: this.confirmPassword
         })
-        this.setAuthStore(res)
+        this.setAuthStore()
       } catch (e) {
         this.authStore.logged = false
         setAlert(this.$refs.alert, "error", "Erro", e.response.data.message)
@@ -230,11 +231,12 @@ export default defineComponent({
     },
 
     setAuthStore(res) {
+      setCookie('jwt-token', res.data)
       const user = this.parseJwt(res.data)
       this.authStore.id = user.id
       this.authStore.logged = true
-      this.authStore.jwt = res.data
-      this.$router.push('/')
+      this.$router.push("/")
+
     }
   },
 });

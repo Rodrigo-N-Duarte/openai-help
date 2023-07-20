@@ -23,20 +23,24 @@ async function routes(fastify: FastifyInstance): Promise<void> {
         handler: userController.findById
     });
     fastify.get('/user', {
+        preHandler: authController.authenticateToken,
         handler: userController.findAll
     });
 
 
     // Item
     fastify.post("/item/create", {
+        preHandler: authController.authenticateToken,
         schema: itemSchema.create,
         handler: itemController.createItem
     })
     fastify.post("/item/purchase", {
+        preHandler: authController.authenticateToken,
         schema: itemSchema.purchase,
         handler: itemController.purchaseItem
     })
     fastify.get("/item/:userId", {
+        preHandler: authController.authenticateToken,
         schema: itemSchema.getAllByUserId,
         handler: itemController.getAll
     })

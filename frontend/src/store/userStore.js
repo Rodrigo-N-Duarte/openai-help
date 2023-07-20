@@ -1,18 +1,15 @@
 import {api} from './api'
 import {defineStore} from "pinia";
-import {AuthStore} from "@/store/authStore";
 export const UserStore = defineStore('UserStore', {
     state: () => {
     },
     persist: true,
     actions: {
         async findById(id) {
-            const authStore = AuthStore()
-            return await api.get(`/user/${id}`,{headers: {"Authorization": `Bearer ${authStore.jwt}`}})
+            return await api.get(`/user/${id}`)
         },
         async findAll() {
-            const authStore = AuthStore()
-            return await api.get(`/user`,{headers: {"Authorization": `Bearer ${authStore.jwt}`}})
+            return await api.get(`/user`)
         },
     }
 })
