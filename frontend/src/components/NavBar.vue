@@ -27,7 +27,7 @@
 
 <script>
 import {AuthStore} from "@/store/authStore";
-
+import {clearCookie} from "@/utils/cookie";
 export default {
     name: "NavBar",
     data() {
@@ -45,6 +45,7 @@ export default {
     methods: {
         async logout() {
             try {
+              clearCookie('jwt-token')
                 await this.authStore.logoutUser(this.authStore.id).then(() => {
                     this.authStore.id = null
                     this.authStore.jwt = null
