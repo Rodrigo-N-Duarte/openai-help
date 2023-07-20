@@ -18,6 +18,7 @@ async function routes(fastify: FastifyInstance): Promise<void> {
 
     // User
     fastify.get('/user/:id', {
+        preHandler: authController.authenticateToken,
         schema: userSchema.findById,
         handler: userController.findById
     });

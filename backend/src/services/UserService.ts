@@ -27,6 +27,10 @@ export class UserService {
         return user ? user : null
     }
 
+    async updateToken(userId: number, token: string) {
+        await this.repository.updateToken(userId, token);
+    }
+
     async updateUserPoints(idUser: number, points: number, flag: string) {
         let user: User = await this.findById(idUser)
         let newPoints;

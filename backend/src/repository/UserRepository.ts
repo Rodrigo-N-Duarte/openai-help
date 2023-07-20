@@ -50,4 +50,12 @@ export class UserRepository {
             .where("id = :id", { id: id })
             .execute();
     }
+
+    async updateToken(id: number, token: string) {
+        return await this.repository.createQueryBuilder()
+            .update(User)
+            .set({jwt: token})
+            .where("id = :id", {id: id})
+            .execute();
+    }
 }

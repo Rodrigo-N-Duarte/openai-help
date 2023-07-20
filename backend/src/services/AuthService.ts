@@ -34,6 +34,7 @@ export class AuthService {
             }
             await this.userHistoryService.updateHistory(userExists, UserHistoryEnum.LOGGED)
             const token = jwt.sign({id: userExists?.id}, process.env.JWT_SECRET)
+            await this.updateToken(userExists.id, token)
             return reply.send(token)
         }
         return reply.status(422).send(new Error(Messages.USUARIO_NAO_ENCONTRADO))
@@ -55,10 +56,15 @@ export class AuthService {
             await user.save()
             await this.userHistoryService.updateHistory(user, UserHistoryEnum.REGISTERED)
             const token = jwt.sign({id: user.id}, process.env.JWT_SECRET)
+            await this.updateToken(user.id, token)
             return reply.send(token)
         } catch (e) {
             return reply.status(400).send(e)
         }
+    }
+
+    private async updateToken(userId: number, token: string) {
+        await this.userService.updateToken(userId, token);
     }
 
     async logout(req: any, reply: any) {

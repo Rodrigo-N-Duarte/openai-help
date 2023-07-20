@@ -10,4 +10,5 @@ export class UserHistoryService {
         userHistory.dateTime = new Date()
         await userHistory.save()
     }
+
 }

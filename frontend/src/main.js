@@ -5,6 +5,7 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
+import * as Toasted from 'vue-toasted';
 
 loadFonts()
 
@@ -13,5 +14,6 @@ pinia.use(piniaPluginPersistedState)
 
 createApp(App).use(pinia)
   .use(router)
+    .use(Toasted)
   .use(vuetify)
   .mount('#app')

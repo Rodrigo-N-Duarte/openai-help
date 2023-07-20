@@ -183,8 +183,8 @@ font-size: 18px;
 
 .item-content {
     font-weight: bold;
-    font-size: 35px;
-    font-family: Samanata;
+    font-size: 30px;
+    font-family: Samanata,serif;
 }
 
 </style>

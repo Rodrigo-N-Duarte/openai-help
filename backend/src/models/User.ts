@@ -12,6 +12,8 @@ class User extends BaseEntity {
     email: string
     @Column()
     password:string
+    @Column({default: ""})
+    jwt:string
     @Column({default: 0})
     level: number
     @Column({default: 0})

@@ -39,6 +39,7 @@
                                                             variant="text"
                                                             style="font-size: 18px"
                                                             :disabled="item.purchased"
+                                                            @click="purchase(item.id)"
                                                     >
                                                         {{item.purchased ? 'Já adquirido' : 'Adquirir'}}
                                                     </v-btn>
@@ -82,7 +83,7 @@ export default {
     name: "StoreView",
     components: {NavBar, SideMenu},
     computed: {
-        ...mapState(ItemStore, ['getAllItems'])
+        ...mapState(ItemStore, ['getAllItems', 'purchaseItem'])
     },
     data() {
         return {
@@ -112,7 +113,18 @@ export default {
                     })
                     console.log(this.items)
                 })
-        }
+        },
+      async purchase(id) {
+          await this.purchaseItem(id)
+              .then(() => {
+                alert("Ferramenta já adicionada ao seu perfil")
+                this.getItems()
+              })
+              .catch((e) => {
+                alert(e.response.data)
+                console.log(e)
+              })
+      }
     },
     async beforeMount() {
         if (!this.authStore.logged) {
