@@ -13,7 +13,6 @@ export class ItemRepository {
     }
     async findAll(userId: number) {
         const builder = this.repository.createQueryBuilder("i")
-            .leftJoin(ItemUser, "iu", "iu.user.id = :userId", {userId: userId})
 
         return await builder
             .select(`

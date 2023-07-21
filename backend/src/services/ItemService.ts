@@ -26,12 +26,7 @@ export class ItemService {
     async getAll(req: any, reply: any) {
         try {
             const items: Item[] = await this.itemRepository.findAll(req.params.userId)
-            for (let item of items) {
-                const itemUser = await this.itemUserService.checkIfAlreadyPurchased(item.id, req.params.userId)
-                if (itemUser[0]) {
-                    item = Object.assign(item, itemUser[0])
-                }
-            }
+
             return items
         } catch (e) {
             return reply.status(400).send(e)
@@ -53,7 +48,7 @@ export class ItemService {
                     itemUser.purchased = true
                     await itemUser.save()
                     delete itemUser.user
-                    return itemUser
+                    return reply.send(itemUser)
                 }
                 return reply.status(400).send(Messages.SALDO_INSUFICIENTE)
             }

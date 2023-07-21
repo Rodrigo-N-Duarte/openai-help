@@ -6,4 +6,9 @@ export class UserSchema {
             id: Type.Number()
         })
     }
+    getHistory = {
+        params: Type.Object({
+            id: Type.Number()
+        })
+    }
 }

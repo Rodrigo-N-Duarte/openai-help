@@ -5,11 +5,13 @@ import {ItemController} from "../controllers/ItemController";
 import AuthSchema from "../schemas/AuthSchema.ts";
 import {ItemSchema} from "../schemas/ItemSchema";
 import {UserSchema} from "../schemas/UserSchema.ts";
+import {ItemUserController} from "../controllers/ItemUserController";
 async function routes(fastify: FastifyInstance): Promise<void> {
 
     const userController = new UserController()
     const itemController = new ItemController()
     const authController = new AuthController()
+    const itemUserController = new ItemUserController()
 
     const authSchema = new AuthSchema();
     const itemSchema = new ItemSchema();
@@ -26,6 +28,11 @@ async function routes(fastify: FastifyInstance): Promise<void> {
         preHandler: authController.authenticateToken,
         handler: userController.findAll
     });
+    fastify.get("/user/purchase-history/:id", {
+        preHandler: authController.authenticateToken,
+        schema: userSchema.getHistory,
+        handler: itemUserController.getPurchaseHistory
+    })
 
 
     // Item

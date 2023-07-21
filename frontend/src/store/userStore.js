@@ -11,5 +11,8 @@ export const UserStore = defineStore('UserStore', {
         async findAll() {
             return await api.get(`/user`)
         },
+        async getHistory(id) {
+            return await api.get(`/user/purchase-history/${id}`)
+        }
     }
 })

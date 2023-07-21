@@ -9,9 +9,6 @@
                 <router-link to="/profile" class="link-default">
                     <h4 class="my-3 menu-item">Perfil</h4>
                 </router-link>
-                <router-link to="/itens" class="link-default">
-                    <h4 class="my-3 menu-item">Itens</h4>
-                </router-link>
                 <router-link to="/history" class="link-default">
                     <h4 class="my-3 menu-item">Histórico</h4>
                 </router-link>

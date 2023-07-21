@@ -13,15 +13,16 @@ export class AuthService {
     userService = new UserService()
     userHistoryService = new UserHistoryService()
     async authenticateToken(req: any, reply: any, next: any) {
-        const authorization = req.headers['authorization']
-        const token = authorization && authorization?.split(' ')[1]
+        const authorization = req.headers['authorization'];
+        const token = authorization && authorization?.split(' ')[1];
         if (!token) {
-            return reply.status(401).send(new Error(Messages.ACESSO_NEGADO))
+            return reply.status(401).send(new Error(Messages.ACESSO_NEGADO));
         }
-        jwt.verify(token, process.env.JWT_SECRET, (err: any) => {
-            if (err) return reply.status(403).send(new Error(Messages.TOKEN_INVALIDO))
-            next()
-        })
+        try {
+            await jwt.verify(token, process.env.JWT_SECRET);
+        } catch (err) {
+            return reply.status(403).send(new Error(Messages.TOKEN_INVALIDO));
+        }
     }
 
     async login(req: any, reply: any) {

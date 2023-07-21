@@ -4,6 +4,8 @@ import HomeView from "@/views/HomeView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import RankView from "@/views/RankView.vue";
 import StoreView from "@/views/StoreView.vue";
+import PurchaseHistoryView from "@/views/PurchaseHistoryView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 const routes = [
   {
@@ -27,9 +29,19 @@ const routes = [
     component: RankView
   },
   {
+    path: '/history',
+    name: 'history',
+    component: PurchaseHistoryView
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notfound',
+    component: NotFoundView
   },
 ]
 
